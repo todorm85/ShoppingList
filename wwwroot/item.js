@@ -41,7 +41,7 @@ function createOrUpdateItem(name, isBought) {
 
         xhr.open('POST', apiBase);
         xhr.setRequestHeader('content-type', 'application/json');
-        xhr.send(name + ',' + isBought);
+        xhr.send(JSON.stringify({name, isBought}));
     });
 }
 
