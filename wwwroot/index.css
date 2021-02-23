@@ -1,0 +1,51 @@
+﻿.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.container {
+    overflow: scroll;
+    width: 75%;
+    height: 75%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: #2F3C42;
+    border-radius: 5px;
+    padding: 5px;
+    padding-top:15px;
+    right: -25px;
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+}
+
+.items-container {
+    margin: 5px;
+    border-radius: 5px;
+}
+
+#itemsToBuy .item {
+    background-color: lightcoral;
+}
+
+#itemsBought .item {
+    background-color: #4FABA2;
+}
+
+#itemsToAdd {
+    display: none;
+}
+
+    #itemsToAdd .item {
+        background-color: lightblue;
+    }
+
+#addItemInput {
+    width: 96%;
+    margin-left: 5px;
+    font-size: large;
+    margin-left: 1%;
+}

@@ -1,0 +1,10 @@
+﻿.item {
+    display: inline-block;
+    margin: 5px;
+    padding: 10px;
+    color: white;
+    font-size: larger;
+    border-radius: 10px;
+    user-select: none;
+    cursor: pointer;
+}
