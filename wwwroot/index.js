@@ -2,6 +2,7 @@
 var itemsToBuy = document.getElementById("itemsToBuy");
 var itemsBought = document.getElementById("itemsBought");
 var addItemInput = document.getElementById("addItemInput");
+var loading = document.getElementById("loading");
 var allitems;
 
 function createItemToBuyEl(text) {
@@ -9,7 +10,7 @@ function createItemToBuyEl(text) {
     createdItem.onclick = function (ev) {
         var item = ev.target;
         var text = getItemElModel(item);
-        createOrUpdateItem(text, true).then(function (res) {
+        createOrUpdateItemElement(text, true).then(function (res) {
             item.remove();
             createBoughtItemEl(text);
         });
@@ -24,7 +25,7 @@ function createBoughtItemEl(text) {
     createdItem.onclick = function (ev) {
         var item = ev.target;
         var text = getItemElModel(item);
-        createOrUpdateItem(text, false).then(function (result) {
+        createOrUpdateItemElement(text, false).then(function (result) {
             item.remove();
             createItemToBuyEl(text);
         });
@@ -55,25 +56,60 @@ addItemInput.oninput = function (ev) {
         newItem.onclick = function (ev) {
             var item = ev.target;
             var tergetText = getItemElModel(item);
-            createOrUpdateItem(tergetText, false).then(function (result) {
-                document.querySelectorAll(".item").forEach(function (x) {
-                    if (getItemElModel(x) == tergetText) {
-                        x.remove();
-                    }
-                });
-
-                createItemToBuyEl(tergetText);
-                itemsToAdd.innerHTML = '';
-                addItemInput.value = '';
-                itemsToAdd.style.display = 'none';
-            })
+            addNewItem(tergetText);
         }
 
         itemsToAdd.appendChild(newItem);
     }
 }
 
+addItemInput.onkeyup = function (e) {
+    var currentInput = e.target.value;
+    if (e.isComposing || e.keyCode === 229)
+        return;
+    e.stopPropagation();
+    if (e.keyCode === 13) {
+        addNewItem(currentInput);
+    }
+}
+
+function addNewItem(name) {
+    createOrUpdateItemElement(name, false).then(function (result) {
+        document.querySelectorAll(".item").forEach(function (x) {
+            if (getItemElModel(x) == name) {
+                x.remove();
+            }
+        });
+
+        createItemToBuyEl(name);
+        itemsToAdd.innerHTML = '';
+        addItemInput.value = '';
+        itemsToAdd.style.display = 'none';
+    })
+}
+
+function createOrUpdateItemElement(name, isBought) {
+    return new Promise(function (resolve) {
+        loading.style.display = "block";
+        createOrUpdateItem(name, isBought)
+            .then(function () {
+                resolve();
+            })
+            .finally(function () {
+                loading.style.display = "none";
+            })
+    });
+}
+
 function refreshItems() {
+    if (loading.style.display === "block") {
+        setTimeout(function () {
+            refreshItems();
+        }, 5000);
+
+        return;
+    }
+
     getItems().then(function (items) {
         itemsBought.innerHTML = '';
         itemsToBuy.innerHTML = '';
