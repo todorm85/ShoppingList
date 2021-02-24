@@ -2,13 +2,15 @@
 
 function createItemEl(model) {
     var createdItem = document.createElement("div");
-    createdItem.innerHTML = model;
+    var text = document.createElement("span");
+    text.innerText = model;
+    createdItem.appendChild(text);
     createdItem.className = 'item';
     return createdItem;
 }
 
 function getItemElModel(item) {
-    return item.innerHTML;
+    return item.querySelector('span').innerText;
 }
 
 function sortItemElements(container) {
@@ -41,7 +43,7 @@ function createOrUpdateItem(name, isBought) {
 
         xhr.open('POST', apiBase);
         xhr.setRequestHeader('content-type', 'application/json');
-        xhr.send(JSON.stringify({name, isBought}));
+        xhr.send(JSON.stringify({ name, isBought }));
     });
 }
 
@@ -62,4 +64,18 @@ function getItems() {
         xhr.open('GET', apiBase);
         xhr.send();
     });
+}
+
+function setItemElLoading(item, flag) {
+    if (flag) {
+        let l = document.createElement('div');
+        l.className = 'item-loading';
+        l.onclick = function (ev) {
+            ev.stopPropagation();
+        }
+
+        item.appendChild(l);
+    } else {
+        item.querySelector('.item-loading').remove();
+    }
 }

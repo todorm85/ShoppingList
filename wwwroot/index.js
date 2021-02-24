@@ -4,32 +4,37 @@ var itemsBought = document.getElementById("itemsBought");
 var addItemInput = document.getElementById("addItemInput");
 var loading = document.getElementById("loading");
 var allitems;
+var isLoading = 0;
 
 function createItemToBuyEl(text) {
     var createdItem = createItemEl(text);
-    createdItem.onclick = function (ev) {
-        var item = ev.target;
-        var text = getItemElModel(item);
-        createOrUpdateItemElement(text, true).then(function (res) {
-            item.remove();
-            createBoughtItemEl(text);
-        });
-    }
+    createdItem.onclick = function () { onItemClick(this, true) };
 
     itemsToBuy.appendChild(createdItem);
     sortItemElements(itemsToBuy);
 }
 
+function onItemClick(item, isBought) {
+    var text = getItemElModel(item);
+    setItemElLoading(item, true);
+    isLoading++;
+    createOrUpdateItem(text, isBought).then(function (res) {
+        item.remove();
+        if (isBought) {
+            createBoughtItemEl(text);
+        } else {
+            createItemToBuyEl(text);
+        }
+    }, function () {
+        setItemElLoading(item. false);
+    }).finally(function () {
+        isLoading--;
+    });
+}
+
 function createBoughtItemEl(text) {
     var createdItem = createItemEl(text);
-    createdItem.onclick = function (ev) {
-        var item = ev.target;
-        var text = getItemElModel(item);
-        createOrUpdateItemElement(text, false).then(function (result) {
-            item.remove();
-            createItemToBuyEl(text);
-        });
-    }
+    createdItem.onclick = function () { onItemClick(this, false) };
 
     itemsBought.appendChild(createdItem);
     sortItemElements(itemsBought);
@@ -54,7 +59,8 @@ addItemInput.oninput = function (ev) {
     for (var i = 0; i < allInputs.length; i++) {
         var newItem = createItemEl(allInputs[i]);
         newItem.onclick = function (ev) {
-            var item = ev.target;
+            var item = this;
+            setItemElLoading(item);
             var tergetText = getItemElModel(item);
             addNewItem(tergetText);
         }
@@ -74,7 +80,7 @@ addItemInput.onkeyup = function (e) {
 }
 
 function addNewItem(name) {
-    createOrUpdateItemElement(name, false).then(function (result) {
+    createOrUpdateItem(name, false).then(function (result) {
         document.querySelectorAll(".item").forEach(function (x) {
             if (getItemElModel(x) == name) {
                 x.remove();
@@ -88,21 +94,8 @@ function addNewItem(name) {
     })
 }
 
-function createOrUpdateItemElement(name, isBought) {
-    return new Promise(function (resolve) {
-        loading.style.display = "block";
-        createOrUpdateItem(name, isBought)
-            .then(function () {
-                resolve();
-            })
-            .finally(function () {
-                loading.style.display = "none";
-            })
-    });
-}
-
 function refreshItems() {
-    if (loading.style.display === "block") {
+    if (isLoading > 0) {
         setTimeout(function () {
             refreshItems();
         }, 5000);
