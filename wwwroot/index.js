@@ -3,14 +3,14 @@ var itemsToBuy = document.getElementById("itemsToBuy");
 var itemsBought = document.getElementById("itemsBought");
 var addItemInput = document.getElementById("addItemInput");
 var loading = document.getElementById("loading");
-var allitems;
+var allitems = [];
 var isLoading = 0;
 
-function createItemToBuyEl(text) {
+function createItemElement(text, isBought) {
     var createdItem = createItemEl(text);
-    createdItem.onclick = function () { onItemClick(this, true) };
-
-    itemsToBuy.appendChild(createdItem);
+    createdItem.onclick = function () { onItemClick(this, !isBought) };
+    var container = isBought ? itemsBought : itemsToBuy;
+    container.appendChild(createdItem);
     sortItemElements(itemsToBuy);
 }
 
@@ -20,24 +20,12 @@ function onItemClick(item, isBought) {
     isLoading++;
     createOrUpdateItem(text, isBought).then(function (res) {
         item.remove();
-        if (isBought) {
-            createBoughtItemEl(text);
-        } else {
-            createItemToBuyEl(text);
-        }
+        createItemElement(text, isBought);
     }, function () {
-        setItemElLoading(item. false);
+        setItemElLoading(item, false);
     }).finally(function () {
         isLoading--;
     });
-}
-
-function createBoughtItemEl(text) {
-    var createdItem = createItemEl(text);
-    createdItem.onclick = function () { onItemClick(this, false) };
-
-    itemsBought.appendChild(createdItem);
-    sortItemElements(itemsBought);
 }
 
 addItemInput.oninput = function (ev) {
@@ -80,6 +68,7 @@ addItemInput.onkeyup = function (e) {
 }
 
 function addNewItem(name) {
+    isLoading++;
     createOrUpdateItem(name, false).then(function (result) {
         document.querySelectorAll(".item").forEach(function (x) {
             if (getItemElModel(x) == name) {
@@ -87,11 +76,13 @@ function addNewItem(name) {
             }
         });
 
-        createItemToBuyEl(name);
+        createItemElement(name, false);
         itemsToAdd.innerHTML = '';
         addItemInput.value = '';
         itemsToAdd.style.display = 'none';
-    })
+    }).finally(function () {
+        isLoading--;
+    });
 }
 
 function refreshItems() {
@@ -104,19 +95,29 @@ function refreshItems() {
     }
 
     getItems().then(function (items) {
-        itemsBought.innerHTML = '';
-        itemsToBuy.innerHTML = '';
-        allitems = [];
-        if (items && items.length > 0) {
-            allitems = items;
+        if (!items || items && items.length === 0) {
+            return;
         }
 
         for (var i = 0; i < items.length; i++) {
             var item = items[i];
+            var newContainer;
+            var oldContainer;
             if (item.isBought === 'True') {
-                createBoughtItemEl(item.name);
+                newContainer = itemsBought;
+                oldContainer = itemsToBuy;
             } else {
-                createItemToBuyEl(item.name);
+                newContainer = itemsToBuy;
+                oldContainer = itemsBought;
+            }
+
+            if (!(hasItemElement(newContainer, item.name))) {
+                createItemElement(item.name, item.isBought === 'True');
+            }
+
+            var previousNode = getItemElement(oldContainer, item.name);
+            if (previousNode) {
+                previousNode.remove();
             }
         }
     }).finally(function () {

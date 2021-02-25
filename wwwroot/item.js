@@ -66,6 +66,21 @@ function getItems() {
     });
 }
 
+function hasItemElement(container, itemName) {
+    return !!getItemElement(container, itemName)
+}
+
+function getItemElement(container, itemName) {
+    var item;
+    container.childNodes.forEach(function (n) {
+        if (getItemElModel(n) === itemName) {
+            item = n;
+        }
+    });
+
+    return item;
+}
+
 function setItemElLoading(item, flag) {
     if (flag) {
         let l = document.createElement('div');
