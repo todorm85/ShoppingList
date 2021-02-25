@@ -5,16 +5,19 @@
     transform: translate(-50%, -50%);
 }
 
+body {
+    background-color: #2F3C42;
+}
+
 .container {
     overflow: scroll;
     width: 75%;
-    height: 75%;
+    height: 100%;
     margin-top: 10px;
-    margin-bottom: 10px;
     background-color: #2F3C42;
     border-radius: 5px;
     padding: 5px;
-    padding-top:15px;
+    padding-top: 15px;
     right: -25px;
 }
 
@@ -31,9 +34,13 @@
     background-color: lightcoral;
 }
 
-#itemsBought .item {
-    background-color: #4FABA2;
+#itemsBought {
+    padding-bottom: 25px;
 }
+
+    #itemsBought .item {
+        background-color: #4FABA2;
+    }
 
 #itemsToAdd {
     display: none;
@@ -48,4 +55,5 @@
     margin-left: 5px;
     font-size: large;
     margin-left: 1%;
+    margin-top: 10%;
 }
