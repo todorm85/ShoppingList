@@ -10,8 +10,7 @@ function createItemElement(text, isBought) {
     var createdItem = createItemEl(text);
     createdItem.onclick = function () { onItemClick(this, !isBought) };
     var container = isBought ? itemsBought : itemsToBuy;
-    container.appendChild(createdItem);
-    sortItemElements(itemsToBuy);
+    container.prepend(createdItem);
 }
 
 function onItemClick(item, isBought) {
@@ -39,7 +38,7 @@ addItemInput.oninput = function (ev) {
     itemsToAdd.style.display = 'block';
     var allInputs = [currentInput];
     for (var i = 0; i < allitems.length; i++) {
-        if (allitems[i].name.startsWith(currentInput)) {
+        if (allitems[i].name.startsWith(currentInput) && allitems[i].name !== currentInput) {
             allInputs.push(allitems[i].name);
         }
     }
@@ -120,6 +119,8 @@ function refreshItems() {
                 previousNode.remove();
             }
         }
+
+        allitems = items;
     }).finally(function () {
         setTimeout(function () {
             refreshItems();
