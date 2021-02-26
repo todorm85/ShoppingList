@@ -3,14 +3,14 @@
 function createItemEl(model) {
     var createdItem = document.createElement("div");
     var text = document.createElement("span");
-    text.innerText = model;
+    text.innerHTML = model;
     createdItem.appendChild(text);
     createdItem.className = 'item';
     return createdItem;
 }
 
 function getItemElModel(item) {
-    return item.querySelector('span').innerText;
+    return item.querySelector('span').innerHTML;
 }
 
 function sortItemElements(container) {
