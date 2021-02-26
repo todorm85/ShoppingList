@@ -11,7 +11,7 @@ namespace ShoppingList
     internal class ItemsRepo
     {
         private static IList<Item> items = new List<Item>();
-        private object itemsLock = new object();
+        private static object itemsLock = new object();
 
         static ItemsRepo()
         {
@@ -54,10 +54,7 @@ namespace ShoppingList
 
         public IEnumerable<Item> GetItems()
         {
-            lock (itemsLock)
-            {
-                return items;
-            }
+            return items;
         }
 
         private static void LoadItemsFromPersistence()
