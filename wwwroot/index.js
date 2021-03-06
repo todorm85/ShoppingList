@@ -6,7 +6,7 @@ var loading = document.getElementById("loading");
 var allitems = [];
 var isLoading = 0;
 
-function createItemElement(text, isBought) {
+function createClickableItemElement(text, isBought) {
     var createdItem = createItemEl(text);
     createdItem.onclick = function () { onItemClick(this, !isBought) };
     var container = isBought ? itemsBought : itemsToBuy;
@@ -19,10 +19,9 @@ function onItemClick(item, isBought) {
     isLoading++;
     createOrUpdateItem(text, isBought).then(function (res) {
         item.remove();
-        createItemElement(text, isBought);
-    }, function () {
-        setItemElLoading(item, false);
+        createClickableItemElement(text, isBought);
     }).finally(function () {
+        setItemElLoading(item, false);
         isLoading--;
     });
 }
@@ -47,7 +46,6 @@ addItemInput.oninput = function (ev) {
         var newItem = createItemEl(allInputs[i]);
         newItem.onclick = function (ev) {
             var item = this;
-            setItemElLoading(item);
             var tergetText = getItemElModel(item);
             addNewItem(tergetText);
         }
@@ -75,7 +73,7 @@ function addNewItem(name) {
             }
         });
 
-        createItemElement(name, false);
+        createClickableItemElement(name, false);
         itemsToAdd.innerHTML = '';
         addItemInput.value = '';
         itemsToAdd.style.display = 'none';
@@ -111,7 +109,7 @@ function refreshItems() {
             }
 
             if (!(hasItemElement(newContainer, item.name))) {
-                createItemElement(item.name, item.isBought === 'True');
+                createClickableItemElement(item.name, item.isBought === 'True');
             }
 
             var previousNode = getItemElement(oldContainer, item.name);
