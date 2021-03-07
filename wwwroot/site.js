@@ -4,7 +4,7 @@ var titleEl = document.getElementsByTagName('title')[0];
 titleEl.innerHTML = 'Shopping list';
 
 var nav = document.createElement("nav-component");
-document.getElementById('main').prepend(nav);
+document.body.prepend(nav);
 
 
 // for qucik preview of watch

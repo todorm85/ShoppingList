@@ -1,22 +1,27 @@
 ﻿nav {
-    display: flex;
-    align-items: center;
-    justify-content: left;
+    position: fixed;
+    left: 0;
+    right:0;
+    top:0;
     border-bottom: solid 3px white;
     margin-bottom: 10px;
+    background-color: #252f33;
+    z-index: 300;
 }
 
-nav ul {
-    margin-bottom: 10px;
-}
-    nav ul li {
-        list-style: none;
-        display: inline-block;
-        margin-top: 15px;
-        padding: 10px;
-        border-radius: 5px;
-        background-color: #252f33;
+    nav ul {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin: 0;
+        padding: 0 5%;
     }
+
+        nav ul li {
+            list-style: none;
+            padding: 10px;
+            border-radius: 5px;
+        }
 
     nav a {
         font-weight: 700;
