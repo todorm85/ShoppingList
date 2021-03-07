@@ -3,24 +3,20 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>shop</title>
+    <script src="main-component.js" type="module"></script>
+
     <link href="/item.css" rel="stylesheet" />
     <link href="/index.css" rel="stylesheet" />
-    <link href="/dev.css" rel="stylesheet" />
 </head>
 <body>
-    <noscript>
-        BROWSER MUST SUPPORT JAVASCRIPT!
-    </noscript>
-    <div class="container centered">
+    <main-component>
         <div class="input-container">
             <input id="addItemInput" type="text" placeholder="Add" />
         </div>
         <div id="itemsToAdd" class="items-container"></div>
         <div id="itemsToBuy" class="items-container"></div>
         <div id="itemsBought" class="items-container"></div>
-    </div>
-    <div class="watch-simulator"></div>
+    </main-component>
 </body>
 </html>
 <script src="item.js"></script>
