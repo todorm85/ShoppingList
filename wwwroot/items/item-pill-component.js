@@ -30,7 +30,7 @@ export class ItemPillComponent extends HTMLElement {
         super();
         this.attachShadow({ mode: 'open' });
 
-        // to avoid FOUC we use inner style, not loading from the external file
+        // to avoid FOUC inner style is used here, not loading from the external file
         var itemCss = document.createElement('style');
         itemCss.innerText = css;
 
