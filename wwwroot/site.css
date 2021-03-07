@@ -19,7 +19,7 @@ body.all-loaded {
     overflow: scroll;
     width: 75%;
     height: 100%;
-    padding-top: 25%;
+    padding-top: 100px;
 }
 
 ::-webkit-scrollbar {
