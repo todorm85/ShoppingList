@@ -1,24 +1,19 @@
-﻿const apiBase = '/api/items';
+﻿import './item-component.js';
 
-function createItemEl(model) {
-    var createdItem = document.createElement("div");
-    var text = document.createElement("span");
-    text.innerHTML = model;
-    createdItem.appendChild(text);
-    createdItem.className = 'item';
-    return createdItem;
+const apiBase = '/api/items';
+
+export function createItemEl(model) {
+    var el = document.createElement('item-component');
+    el.model = model;
+    return el;
 }
 
-function getItemElModel(item) {
-    return item.querySelector('span').innerHTML;
-}
-
-function sortItemElements(container) {
+export function sortItemElements(container) {
     var elements = [].slice.call(container.children);
     elements = elements.sort(function (f, s) {
-        if (getItemElModel(f) > getItemElModel(s))
+        if (f.model > s.model)
             return -1;
-        if (getItemElModel(f) < getItemElModel(s))
+        if (f.model < s.model)
             return 1;
         return 0;
     });
@@ -27,7 +22,7 @@ function sortItemElements(container) {
     }
 }
 
-function createOrUpdateItem(name, isBought) {
+export function createOrUpdateItem(name, isBought) {
     return new Promise(function (resolve, reject) {
         let xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function (ev) {
@@ -47,7 +42,7 @@ function createOrUpdateItem(name, isBought) {
     });
 }
 
-function getItems() {
+export function getItems() {
     return new Promise(function (resolve, reject) {
         let xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function (ev) {
@@ -66,31 +61,17 @@ function getItems() {
     });
 }
 
-function hasItemElement(container, itemName) {
+export function hasItemElement(container, itemName) {
     return !!getItemElement(container, itemName)
 }
 
-function getItemElement(container, itemName) {
+export function getItemElement(container, itemName) {
     var item;
     container.childNodes.forEach(function (n) {
-        if (getItemElModel(n) === itemName) {
+        if (n.model === itemName) {
             item = n;
         }
     });
 
     return item;
-}
-
-function setItemElLoading(item, flag) {
-    if (flag) {
-        let l = document.createElement('div');
-        l.className = 'item-loading';
-        l.onclick = function (ev) {
-            ev.stopPropagation();
-        }
-
-        item.appendChild(l);
-    } else {
-        item.querySelector('.item-loading').remove();
-    }
 }

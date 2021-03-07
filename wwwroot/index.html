@@ -3,21 +3,24 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="main-component.js" type="module"></script>
+    <title></title>
+    <link href="site.css" rel="stylesheet" />
 
-    <link href="/item.css" rel="stylesheet" />
-    <link href="/index.css" rel="stylesheet" />
+    <link href="index.css" rel="stylesheet" />
 </head>
 <body>
-    <main-component>
+    <noscript>App requires JavaScript enabled browser!</noscript>
+    <div id="main">
         <div class="input-container">
             <input id="addItemInput" type="text" placeholder="Add" />
         </div>
         <div id="itemsToAdd" class="items-container"></div>
         <div id="itemsToBuy" class="items-container"></div>
         <div id="itemsBought" class="items-container"></div>
-    </main-component>
+    </div>
 </body>
 </html>
-<script src="item.js"></script>
-<script src="index.js"></script>
+
+<script src="site.js" type="module"></script>
+
+<script src="index.js" type="module"></script>

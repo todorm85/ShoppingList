@@ -3,25 +3,15 @@
     border-radius: 5px;
 }
 
-#itemsToBuy .item {
-    background-color: lightcoral;
-}
-
 #itemsBought {
     padding-bottom: 25px;
+    --item-background-color: #4FABA2;
 }
-
-    #itemsBought .item {
-        background-color: #4FABA2;
-    }
 
 #itemsToAdd {
     display: none;
+    --item-background-color: lightblue;
 }
-
-    #itemsToAdd .item {
-        background-color: lightblue;
-    }
 
 #addItemInput {
     width: 96%;

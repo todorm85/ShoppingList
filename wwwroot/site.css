@@ -1,15 +1,20 @@
 ﻿body {
+    opacity: 0;
     background-color: #2F3C42;
 }
 
-.centered {
+body.all-loaded {
+    opacity: 100;
+}
+
+.centered, #main {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
 
-.container {
+.container, #main {
     overflow: scroll;
     width: 75%;
     height: 100%;

@@ -1,33 +1,34 @@
-﻿var itemsToAdd = document.getElementById("itemsToAdd");
+﻿import * as service from './items/item-service.js'
+
+var itemsToAdd = document.getElementById("itemsToAdd");
 var itemsToBuy = document.getElementById("itemsToBuy");
 var itemsBought = document.getElementById("itemsBought");
 var addItemInput = document.getElementById("addItemInput");
-var loading = document.getElementById("loading");
 var allitems = [];
 var isLoading = 0;
 
 function createClickableItemElement(text, isBought) {
-    var createdItem = createItemEl(text);
+    var createdItem = service.createItemEl(text);
     createdItem.onclick = function () { onItemClick(this, !isBought) };
     var container = isBought ? itemsBought : itemsToBuy;
     container.prepend(createdItem);
 }
 
 function onItemClick(item, isBought) {
-    var text = getItemElModel(item);
-    setItemElLoading(item, true);
+    var text = item.model;
+    item.setLoading(true);
     isLoading++;
-    createOrUpdateItem(text, isBought).then(function (res) {
+    service.createOrUpdateItem(text, isBought).then(function (res) {
         item.remove();
         createClickableItemElement(text, isBought);
     }).finally(function () {
-        setItemElLoading(item, false);
+        item.setLoading(false);
         isLoading--;
     });
 }
 
 addItemInput.oninput = function (ev) {
-    var currentInput = ev.target.value;
+    var currentInput = ev.target.value.trim();
     itemsToAdd.innerHTML = "";
     if (!currentInput) {
         itemsToAdd.style.display = 'none';
@@ -43,10 +44,10 @@ addItemInput.oninput = function (ev) {
     }
 
     for (var i = 0; i < allInputs.length; i++) {
-        var newItem = createItemEl(allInputs[i]);
+        var newItem = service.createItemEl(allInputs[i]);
         newItem.onclick = function (ev) {
             var item = this;
-            var tergetText = getItemElModel(item);
+            var tergetText = item.model;
             addNewItem(tergetText);
         }
 
@@ -66,9 +67,9 @@ addItemInput.onkeyup = function (e) {
 
 function addNewItem(name) {
     isLoading++;
-    createOrUpdateItem(name, false).then(function (result) {
-        document.querySelectorAll(".item").forEach(function (x) {
-            if (getItemElModel(x) == name) {
+    service.createOrUpdateItem(name, false).then(function (result) {
+        Array.from(document.getElementsByTagName("item-component")).forEach(function (x) {
+            if (x.model == name) {
                 x.remove();
             }
         });
@@ -91,7 +92,7 @@ function refreshItems() {
         return;
     }
 
-    getItems().then(function (items) {
+    service.getItems().then(function (items) {
         if (!items || items && items.length === 0) {
             return;
         }
@@ -108,11 +109,11 @@ function refreshItems() {
                 oldContainer = itemsBought;
             }
 
-            if (!(hasItemElement(newContainer, item.name))) {
+            if (!(service.hasItemElement(newContainer, item.name))) {
                 createClickableItemElement(item.name, item.isBought === 'True');
             }
 
-            var previousNode = getItemElement(oldContainer, item.name);
+            var previousNode = service.getItemElement(oldContainer, item.name);
             if (previousNode) {
                 previousNode.remove();
             }
