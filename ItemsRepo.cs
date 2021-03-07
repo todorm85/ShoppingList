@@ -62,6 +62,21 @@ namespace ShoppingList
             }
         }
 
+        internal void Delete(Item item)
+        {
+            if (items.FirstOrDefault(x => x.Name == item.Name) != null)
+            {
+                lock (itemsLock)
+                {
+                    if (items.FirstOrDefault(x => x.Name == item.Name) != null)
+                    {
+                        items.Remove(item);
+                        Persist();
+                    }
+                }
+            }
+        }
+
         private void Persist()
         {
             File.WriteAllText("data.db", items.Serialize());

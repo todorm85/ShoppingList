@@ -25,7 +25,7 @@
 }
 `;
 
-export class ItemComponent extends HTMLElement {
+export class ItemPillComponent extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
@@ -67,4 +67,4 @@ export class ItemComponent extends HTMLElement {
     }
 }
 
-customElements.define("item-component", ItemComponent);
+customElements.define("item-pill-component", ItemPillComponent);

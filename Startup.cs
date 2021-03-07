@@ -42,6 +42,14 @@ namespace ShoppingList
                             service.CreateOrUpdateItem(content.DeserializeItem());
                         }
                     }
+                    else if (context.Request.Method == "DELETE")
+                    {
+                        using (var reader = new StreamReader(context.Request.Body))
+                        {
+                            var content = await reader.ReadToEndAsync();
+                            service.Delete(content.DeserializeItem());
+                        }
+                    }
                 }
             });
         }

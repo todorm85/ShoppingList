@@ -9,8 +9,64 @@
 <body>
     <noscript>App requires JavaScript enabled browser!</noscript>
     <div id="main">
-        <div style="color: white; text-align: center;">Manager</div>        
+        <ul id="items-list">
+
+        </ul>
     </div>
 </body>
 </html>
 <script src="site.js" type="module"></script>
+
+<style>
+    li {
+        color: white;
+        font-family: Arial;
+        list-style: none;
+        display: block;
+        margin-bottom: 20px;
+        font-size: large;
+    }
+
+    li span, button {
+        display: inline-block;
+    }
+
+    li span {
+        width: 20%;
+        min-width: 150px;
+        margin-right: 25px; 
+    }
+
+    li button {
+        text-align: center;
+        margin-right: 15px;
+    }
+</style>
+
+<script type="module">
+    import * as service from './items/item-service.js';
+    const itemsList = document.getElementById('items-list');
+    service.getItems().then(function (items) {
+        items.forEach(function (x) {
+            addItemListEntry(x.name);
+        })
+    })
+
+    function addItemListEntry(name) {
+        var entry = document.createElement('li');
+        entry.id = name;
+        var text = document.createElement('span');
+        text.innerText = name;
+        var btn = document.createElement('button');
+        btn.type = "button";
+        btn.onclick = function () {
+            service.deleteItem(name).then(function () {
+                document.getElementById(name).remove();
+            });
+        }
+
+        btn.textContent = "X";
+        entry.append(text, btn);
+        itemsList.append(entry);
+    }
+</script>
